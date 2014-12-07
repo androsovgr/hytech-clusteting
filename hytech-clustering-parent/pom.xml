@@ -2,12 +2,32 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.mephi.hytech.clustering</groupId>
-	<artifactId>hytech-clustering-parent</artifactId>
+	<artifactId>clustering-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>hytech-clustering-iface</module>
+		<!-- <module>hytech-clustering-iface</module> -->
+		<module>clustering-common-beans</module>
+		<module>clustering-service-parent</module>
+		<module>clustering-interface-parent</module>
+		<module>clustering-api-interface</module>
+		<module>clustering-api-service</module>
+		<module>clustering-ear</module>
 	</modules>
+
+	<properties>
+		<resteasy.version>3.0.10.Final</resteasy.version>
+		<slf4jVersion>1.7.7</slf4jVersion>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4jVersion}</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

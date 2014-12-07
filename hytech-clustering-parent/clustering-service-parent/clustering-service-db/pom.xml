@@ -3,8 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>ru.mephi.hytech.clustering</groupId>
-		<artifactId>clustering-parent</artifactId>
+		<artifactId>clustering-service-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hytech-clustering-iface</artifactId>
+	<artifactId>clustering-service-db</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-interface-db</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 </project>

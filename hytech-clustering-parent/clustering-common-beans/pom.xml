@@ -6,5 +6,5 @@
 		<artifactId>clustering-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>hytech-clustering-iface</artifactId>
+	<artifactId>clustering-common-beans</artifactId>
 </project>
