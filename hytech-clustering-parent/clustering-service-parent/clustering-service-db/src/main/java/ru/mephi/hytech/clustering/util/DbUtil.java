@@ -1,43 +1,44 @@
 package ru.mephi.hytech.clustering.util;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 
-import ru.mephi.hytech.clustering.model.ConnectionInfo;
-import ru.mephi.hytech.clustering.request.ConnectionInfoRequest;
+import ru.mephi.hytech.clustering.request.BaseRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
 
 public class DbUtil {
 
-	public static Connection getConnection(ConnectionInfo info)
-			throws SQLException, ClassNotFoundException {
-		if (info != null) {
-			Class.forName(DbConstants.DRIVER_NAME);
-			String connectionUrl = String.format(
-					DbConstants.CONNECTION_URL_TEMPLATE,
-					new Object[] { info.getHost(), info.getPort() });
-			return DriverManager.getConnection(connectionUrl, info.getLogin(),
-					info.getPassword());
-		} else {
-			return null;
-		}
+	public static Connection getConnection() throws NamingException,
+			SQLException {
+		Context context = new InitialContext();
+		DataSource ds = (DataSource) context
+				.lookup("java:jboss/datasources/HytechDS");
+		return ds.getConnection();
 	}
 
-	public static <T extends BaseResponse, R extends ConnectionInfoRequest> T processRequest(
+	public static <T extends BaseResponse, R extends BaseRequest> T processRequest(
 			Class<T> resposneClass, R request, String methodName,
-			Logger LOGGER, DbExecuteProcessor<T> processor)
-			throws InstantiationException, IllegalAccessException {
+			Logger LOGGER, DbExecuteProcessor<T> processor) {
 		T response = null;
 		LogUtil.logStarted(LOGGER, methodName, request);
-		try (Connection con = DbUtil.getConnection(request.getConnectionInfo());
+		try (Connection con = DbUtil.getConnection();
 				Statement stm = con.createStatement()) {
 			response = processor.process(con, stm);
 		} catch (SQLException e) {
-			response = resposneClass.newInstance();
+			try {
+				response = resposneClass.newInstance();
+			} catch (InstantiationException | IllegalAccessException e1) {
+				throw new RuntimeException("Can't create new instance of "
+						+ resposneClass, e1);
+			}
 			if (e.getMessage().startsWith(DbConstants.CONNECTION_ERROR_PREFIXE)) {
 				response.setErrorCode(ErrorCode.UNABLE_CONNECT);
 			} else {
@@ -46,7 +47,12 @@ public class DbUtil {
 			response.setErrorMessage(e.getMessage());
 			LogUtil.logError(LOGGER, methodName, request, e);
 		} catch (Exception e) {
-			response = resposneClass.newInstance();
+			try {
+				response = resposneClass.newInstance();
+			} catch (InstantiationException | IllegalAccessException e1) {
+				throw new RuntimeException("Can't create new instance of "
+						+ resposneClass, e1);
+			}
 			response.setErrorCode(ErrorCode.INTERNAL_ERROR);
 			response.setErrorMessage(e.getMessage());
 			LogUtil.logError(LOGGER, methodName, request, e);

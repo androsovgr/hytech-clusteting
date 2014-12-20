@@ -4,6 +4,8 @@
 	<deployment>
 		<dependencies>
 			<module name="ru.hytech" export="true" />
+			<module name="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider"
+				export="true" />
 		</dependencies>
 	</deployment>
 </jboss-deployment-structure>

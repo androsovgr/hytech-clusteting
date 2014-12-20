@@ -14,7 +14,7 @@
         <dependent-module archiveName="clustering-service-db.jar" deploy-path="/" handle="module:/resource/clustering-service-db/clustering-service-db">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="slf4j-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar">
+        <dependent-module archiveName="slf4j-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

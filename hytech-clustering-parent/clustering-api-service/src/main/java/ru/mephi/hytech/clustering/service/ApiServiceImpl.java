@@ -5,11 +5,11 @@ import javax.ejb.EJB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.mephi.hytech.clustering.request.ConnectionInfoRequest;
+import ru.mephi.hytech.clustering.request.BaseRequest;
+import ru.mephi.hytech.clustering.request.PersonListRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
-import ru.mephi.hytech.clustering.response.StringListResponse;
+import ru.mephi.hytech.clustering.response.PersonListResponse;
 import ru.mephi.hytech.clustering.util.MethodUtil;
-import ru.mephi.hytech.clustering.util.processor.RequestProcessor;
 
 public class ApiServiceImpl implements ApiService {
 
@@ -18,43 +18,33 @@ public class ApiServiceImpl implements ApiService {
 	@EJB
 	private TestDbService testDbService;
 	@EJB
-	private TableDbService tableDbService;
+	private UserDbService userDbService;
 
 	@Override
-	public BaseResponse testConnection(ConnectionInfoRequest request)
-			throws InstantiationException, IllegalAccessException {
+	public BaseResponse testConnection(BaseRequest request) {
 		final String methodName = "testConnection";
 		return MethodUtil.processRequest(BaseResponse.class, request,
-				methodName, LOGGER,
-				new RequestProcessor<ConnectionInfoRequest, BaseResponse>() {
-					@Override
-					public BaseResponse process(ConnectionInfoRequest request)
-							throws InstantiationException,
-							IllegalAccessException {
-						return testDbService.testDbConnection(request);
-					}
+				methodName, LOGGER, (r) -> {
+					return testDbService.testDbConnection(r);
 				});
 	}
 
 	@Override
-	public StringListResponse getTableNames(ConnectionInfoRequest request)
-			throws InstantiationException, IllegalAccessException {
-		final String methodName = "getTableNames";
-		return MethodUtil
-				.processRequest(
-						StringListResponse.class,
-						request,
-						methodName,
-						LOGGER,
-						new RequestProcessor<ConnectionInfoRequest, StringListResponse>() {
-							@Override
-							public StringListResponse process(
-									ConnectionInfoRequest request)
-									throws InstantiationException,
-									IllegalAccessException {
-								return tableDbService.getTableNames(request);
-							}
-						});
+	public PersonListResponse getAllUsers(BaseRequest request) {
+		final String methodName = "getAllUsers";
+		return MethodUtil.processRequest(PersonListResponse.class, request,
+				methodName, LOGGER, (r) -> {
+					return userDbService.getAllPeople(r);
+				});
+	}
+
+	@Override
+	public BaseResponse putPeople(PersonListRequest request) {
+		final String methodName = "getAllUsers";
+		return MethodUtil.processRequest(BaseResponse.class, request,
+				methodName, LOGGER, (r) -> {
+					return userDbService.putPeople(r);
+				});
 	}
 
 }

@@ -9,7 +9,7 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ru.mephi.hytech.clustering.request.ConnectionInfoRequest;
+import ru.mephi.hytech.clustering.request.BaseRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
 import ru.mephi.hytech.clustering.util.DbExecuteProcessor;
 import ru.mephi.hytech.clustering.util.DbUtil;
@@ -22,8 +22,7 @@ public class TestDbServiceImpl implements TestDbService {
 			.getLogger(TestDbServiceImpl.class);
 
 	@Override
-	public BaseResponse testDbConnection(ConnectionInfoRequest request)
-			throws InstantiationException, IllegalAccessException {
+	public BaseResponse testDbConnection(BaseRequest request) {
 		final String methodName = "testDbConnection";
 		return DbUtil.processRequest(BaseResponse.class, request, methodName,
 				LOGGER, new DbExecuteProcessor<BaseResponse>() {

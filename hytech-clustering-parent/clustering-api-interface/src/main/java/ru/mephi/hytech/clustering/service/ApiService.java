@@ -6,9 +6,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import ru.mephi.hytech.clustering.request.ConnectionInfoRequest;
+import ru.mephi.hytech.clustering.request.BaseRequest;
+import ru.mephi.hytech.clustering.request.PersonListRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
-import ru.mephi.hytech.clustering.response.StringListResponse;
+import ru.mephi.hytech.clustering.response.PersonListResponse;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
@@ -17,11 +18,13 @@ public interface ApiService {
 
 	@Path("/testConnection")
 	@POST
-	public BaseResponse testConnection(ConnectionInfoRequest request)
-			throws InstantiationException, IllegalAccessException;
+	public BaseResponse testConnection(BaseRequest request);
 
-	@Path("/getTableNames")
+	@Path("/getAllUsers")
 	@POST
-	public StringListResponse getTableNames(ConnectionInfoRequest request)
-			throws InstantiationException, IllegalAccessException;
+	public PersonListResponse getAllUsers(BaseRequest request);
+
+	@Path("/putPeople")
+	@POST
+	public BaseResponse putPeople(PersonListRequest request);
 }
