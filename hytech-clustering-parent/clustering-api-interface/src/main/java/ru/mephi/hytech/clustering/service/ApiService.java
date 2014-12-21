@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import ru.mephi.hytech.clustering.request.BaseRequest;
 import ru.mephi.hytech.clustering.request.PersonListRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
+import ru.mephi.hytech.clustering.response.CountRequest;
 import ru.mephi.hytech.clustering.response.PersonListResponse;
 
 @Path("/")
@@ -27,4 +28,16 @@ public interface ApiService {
 	@Path("/putPeople")
 	@POST
 	public BaseResponse putPeople(PersonListRequest request);
+
+	@Path("/fillDb")
+	@POST
+	public BaseResponse fillDb(CountRequest request);
+
+	@Path("/clear")
+	@POST
+	public BaseResponse clear(BaseRequest request);
+
+	@Path("/clusterize")
+	@POST
+	public BaseResponse clusterize(BaseRequest request);
 }

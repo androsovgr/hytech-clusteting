@@ -24,7 +24,7 @@ public class TableDBServiceImpl {
 						request,
 						methodName,
 						LOGGER,
-						(con, stm) -> {
+						(r,	con, stm) -> {
 							ResultSet rs = stm
 									.executeQuery("select NAME from TABLES;");
 							List<String> tableNames = new ArrayList<String>();

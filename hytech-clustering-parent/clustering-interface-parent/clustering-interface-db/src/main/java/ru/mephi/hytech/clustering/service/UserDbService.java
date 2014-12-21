@@ -11,4 +11,6 @@ public interface UserDbService {
 
 	public BaseResponse putPeople(PersonListRequest request);
 
+	public BaseResponse clear(BaseRequest request);
+
 }

@@ -24,6 +24,12 @@
 		</dependency>
 		<dependency>
 			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-interface-orchestration</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
 			<artifactId>clustering-interface-db</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>

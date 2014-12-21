@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="clustering-ear-0.0.1-SNAPSHOT">
-        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
-        <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+	<wb-module deploy-name="clustering-ear-0.0.1-SNAPSHOT">
+		<wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+		<wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
         <dependent-module archiveName="clustering-api-service.war" deploy-path="/" handle="module:/resource/clustering-api-service/clustering-api-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -11,11 +11,23 @@
         <dependent-module archiveName="clustering-interface-db.jar" deploy-path="/lib" handle="module:/resource/clustering-interface-db/clustering-interface-db">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="clustering-interface-orchestration.jar" deploy-path="/lib" handle="module:/resource/clustering-interface-orchestration/clustering-interface-orchestration">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="clustering-interface-clustering.jar" deploy-path="/lib" handle="module:/resource/clustering-interface-clustering/clustering-interface-clustering">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="clustering-service-db.jar" deploy-path="/" handle="module:/resource/clustering-service-db/clustering-service-db">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="clustering-service-orchestration.jar" deploy-path="/" handle="module:/resource/clustering-service-orchestration/clustering-service-orchestration">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="clustering-service-clustering.jar" deploy-path="/" handle="module:/resource/clustering-service-clustering/clustering-service-clustering">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="slf4j-api.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-    </wb-module>
+	</wb-module>
 </project-modules>

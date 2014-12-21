@@ -10,6 +10,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>clustering-interface-db</module>
+		<module>clustering-interface-orchestration</module>
+		<module>clustering-interface-clustering</module>
 	</modules>
 
 	<dependencies>

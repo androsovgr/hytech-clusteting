@@ -16,14 +16,26 @@
 			<version>${project.version}</version>
 			<type>jar</type>
 		</dependency>
-		<!-- <dependency> <groupId>ru.mephi.hytech.clustering</groupId> <artifactId>clustering-api-interface</artifactId> 
-			<version>${project.version}</version> <type>jar</type> </dependency> -->
+		<!-- INTERFACES -->
 		<dependency>
 			<groupId>ru.mephi.hytech.clustering</groupId>
 			<artifactId>clustering-interface-db</artifactId>
 			<version>${project.version}</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-interface-orchestration</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-interface-clustering</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+		</dependency>
+		<!-- SERVICES -->
 		<dependency>
 			<groupId>ru.mephi.hytech.clustering</groupId>
 			<artifactId>clustering-api-service</artifactId>
@@ -33,6 +45,18 @@
 		<dependency>
 			<groupId>ru.mephi.hytech.clustering</groupId>
 			<artifactId>clustering-service-db</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-service-orchestration</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-service-clustering</artifactId>
 			<version>${project.version}</version>
 			<type>ejb</type>
 		</dependency>

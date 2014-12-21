@@ -20,6 +20,7 @@ public class JacksonConfig implements ContextResolver<ObjectMapper> {
 		om = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(LocalDate.class, new LocalDateSerializer());
+		module.addDeserializer(LocalDate.class, new LocalDateDeserializer());
 		om.registerModule(module);
 	}
 

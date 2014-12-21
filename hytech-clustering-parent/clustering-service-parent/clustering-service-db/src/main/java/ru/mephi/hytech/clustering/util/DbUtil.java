@@ -26,12 +26,12 @@ public class DbUtil {
 
 	public static <T extends BaseResponse, R extends BaseRequest> T processRequest(
 			Class<T> resposneClass, R request, String methodName,
-			Logger LOGGER, DbExecuteProcessor<T> processor) {
+			Logger LOGGER, DbExecuteProcessor<T, R> processor) {
 		T response = null;
 		LogUtil.logStarted(LOGGER, methodName, request);
 		try (Connection con = DbUtil.getConnection();
 				Statement stm = con.createStatement()) {
-			response = processor.process(con, stm);
+			response = processor.process(request, con, stm);
 		} catch (SQLException e) {
 			try {
 				response = resposneClass.newInstance();

@@ -16,6 +16,8 @@
 	</modules>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<outputEncoding>UTF-8</outputEncoding>
 		<resteasy.version>3.0.10.Final</resteasy.version>
 		<slf4jVersion>1.7.2</slf4jVersion>
 		<jackson.version>2.4.1</jackson.version>
