@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition template="/templates/mainTemplate.xhtml">
+		<ui:define name="body">
+			<p:panel header="Действия">
+				<h:form>
+					<p:panelGrid columns="2">
+						<p:commandLink value="Кластеризовать данные"
+							action="#{clusterBean.clusterize()}" update="@all"
+							onclick="PF('rootBlocker').show()" />
+						<p:inputText value="#{clusterBean.clusterCount}" />
+					</p:panelGrid>
+				</h:form>
+			</p:panel>
+			<p:tabView id="tabView">
+				<p:tab title="Таблицей">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Координата 1" />
+						<p:outputLabel value="Вес" />
+
+						<p:outputLabel value="Координата 2" />
+						<p:outputLabel
+							value="Имя (Оценочная характеристка - длина строки)" />
+
+						<p:outputLabel value="Координата 3" />
+						<p:outputLabel
+							value="Фамилия (Оценочная характеристка - длина строки)" />
+
+						<p:outputLabel value="Координата 4" />
+						<p:outputLabel value="Дата рождения (Дней от 1 Января 1970)" />
+
+						<p:outputLabel value="Координата 5" />
+						<p:outputLabel value="Пол (1 - муж, 2 - жен)" />
+					</p:panelGrid>
+					<h:form id="clusterTableForm">
+						<p:dataTable value="#{clusterBean.clusters}" var="cluster"
+							selectionMode="single"
+							rowKey="#{cluster.clusterInfo.centerCoordinates}"
+							selection="#{clusterBean.selected}">
+							<p:ajax event="rowSelect" update=":clusterDataForm" />
+
+							<p:column headerText="Количество моделей">
+								<p:outputLabel value="#{cluster.clusterInfo.modelCount}" />
+							</p:column>
+							<p:column headerText="Координаты центра (нормированные)">
+								<h:outputText value="#{cluster.clusterInfo.centerCoordinates}"
+									converter="coordinateConverter" />
+							</p:column>
+							<p:column headerText="Радиус (нормированный)">
+								<p:outputLabel value="#{cluster.clusterInfo.radius}" />
+							</p:column>
+							<p:column headerText="Координаты центра (ненормированные)">
+								<h:outputText
+									value="#{cluster.clusterInfo.centerCoordinatesUnnormed}"
+									converter="coordinateConverter" />
+							</p:column>
+						</p:dataTable>
+					</h:form>
+				</p:tab>
+				<p:tab title="Графически">
+					<h:form>
+						<p:panelGrid columns="2">
+							<p:outputLabel value="oX" />
+							<p:selectOneRadio value="#{clusterBean.axisX}">
+								<f:selectItems value="#{clusterBean.axises}" />
+							</p:selectOneRadio>
+
+							<p:outputLabel value="oY" />
+							<p:selectOneRadio value="#{clusterBean.axisY}">
+								<f:selectItems value="#{clusterBean.axises}" />
+							</p:selectOneRadio>
+
+							<p:outputLabel />
+							<p:commandButton value="Перерисовать"
+								onclick="PF('rootBlocker').show()"
+								action="#{clusterBean.updateChart()}"
+								update=":tabView:chartForm"
+								oncomplete="PF('rootBlocker').hide()" />
+						</p:panelGrid>
+					</h:form>
+					<h:form id="chartForm">
+						<p:chart type="bubble" model="#{clusterBean.chart}">
+							<p:ajax event="itemSelect" listener="#{clusterBean.itemSelect}"
+								update=":growlForm,:clusterDataForm,:tabView:clusterTableForm" />
+						</p:chart>
+					</h:form>
+				</p:tab>
+			</p:tabView>
+			<h:form id="clusterDataForm">
+				<p:panel header="Данные">
+					<p:dataTable var="person" value="#{clusterBean.selected.persons}"
+						rows="10" paginator="true"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="10,50,100">
+						<p:column headerText="ID">
+							<p:outputLabel value="#{person.userId}" />
+						</p:column>
+						<p:column headerText="Имя">
+							<p:outputLabel value="#{person.firstName}" />
+						</p:column>
+						<p:column headerText="Фамилия">
+							<p:outputLabel value="#{person.lastName}" />
+						</p:column>
+						<p:column headerText="Пол">
+							<p:outputLabel value="#{person.gender}" />
+						</p:column>
+						<p:column headerText="Вес">
+							<p:outputLabel value="#{person.weight}" />
+						</p:column>
+						<p:column headerText="Дата рождения">
+							<p:outputLabel value="#{person.birthDate}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

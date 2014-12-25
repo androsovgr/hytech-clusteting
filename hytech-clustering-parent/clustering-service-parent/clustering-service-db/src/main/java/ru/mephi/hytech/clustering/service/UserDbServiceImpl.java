@@ -44,7 +44,7 @@ public class UserDbServiceImpl implements UserDbService {
 				methodName,
 				LOGGER,
 				(r, con, stm) -> {
-					String sqlTemplate = "insert into people values (0,'%s', '%s',char2date(%s,'dmy'),%s, %d);";
+					String sqlTemplate = "insert into people values (0,'%s', '%s',char2date('%s','dmy'),%s, %d);";
 					for (Person p : r.getUsers()) {
 						String date = p.getBirthDate().getDayOfMonth() + "-" + p.getBirthDate().getMonthValue() + "-"
 								+ p.getBirthDate().getYear();

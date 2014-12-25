@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+	<ui:composition template="/templates/mainTemplate.xhtml">
+		<p:blockUI widgetVar="rootBlocker2" block="@parent" />
+
+		<ui:define name="body">
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+						<p:panel header="Состояние">
+							<p:panelGrid columns="2">
+								<p:outputLabel value="Состояние" />
+								<p:outputLabel value="#{stateBean.systemOk}" />
+
+								<p:outputLabel value="Количество строк в таблице" />
+								<p:outputLabel value="#{stateBean.modelCount}" />
+							</p:panelGrid>
+						</p:panel>
+					</p:column>
+					<p:column>
+						<p:panel header="Действия">
+							<h:form>
+								<p:panelGrid columns="2">
+									<p:commandLink value="Добавить"
+										action="#{stateBean.addModels()}" update="@all"
+										onclick="PF('rootBlocker').show()" />
+									<p:inputText value="#{stateBean.addCount}" />
+
+									<p:commandLink value="Очистить" action="#{stateBean.clear()}"
+										update="@all" onclick="PF('rootBlocker').show()" />
+									<p:outputLabel />
+
+									<p:commandLink value="Обновить"
+										action="#{stateBean.updateAll()}" update="@all"
+										onclick="PF('rootBlocker').show()" />
+									<p:outputLabel />
+								</p:panelGrid>
+							</h:form>
+						</p:panel>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column colspan="2">
+						<p:dataTable var="person" value="#{stateBean.persons}" rows="10"
+							paginator="true"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,50,100">
+							<p:column headerText="ID">
+								<p:outputLabel value="#{person.userId}" />
+							</p:column>
+							<p:column headerText="Имя">
+								<p:outputLabel value="#{person.firstName}" />
+							</p:column>
+							<p:column headerText="Фамилия">
+								<p:outputLabel value="#{person.lastName}" />
+							</p:column>
+							<p:column headerText="Пол">
+								<p:outputLabel value="#{person.gender}" />
+							</p:column>
+							<p:column headerText="Вес">
+								<p:outputLabel value="#{person.weight}" />
+							</p:column>
+							<p:column headerText="Дата рождения">
+								<p:outputLabel value="#{person.birthDate}" />
+							</p:column>
+
+						</p:dataTable>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>

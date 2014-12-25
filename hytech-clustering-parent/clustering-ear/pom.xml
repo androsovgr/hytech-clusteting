@@ -44,6 +44,12 @@
 		</dependency>
 		<dependency>
 			<groupId>ru.mephi.hytech.clustering</groupId>
+			<artifactId>clustering-gui</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>ru.mephi.hytech.clustering</groupId>
 			<artifactId>clustering-service-db</artifactId>
 			<version>${project.version}</version>
 			<type>ejb</type>
@@ -78,6 +84,11 @@
 							<groupId>ru.mephi.hytech.clustering</groupId>
 							<artifactId>clustering-api-service</artifactId>
 							<contextRoot>/clustering</contextRoot>
+						</webModule>
+						<webModule>
+							<groupId>ru.mephi.hytech.clustering</groupId>
+							<artifactId>clustering-gui</artifactId>
+							<contextRoot>/clustering-gui</contextRoot>
 						</webModule>
 					</modules>
 					<fileNameMapping>no-version</fileNameMapping>

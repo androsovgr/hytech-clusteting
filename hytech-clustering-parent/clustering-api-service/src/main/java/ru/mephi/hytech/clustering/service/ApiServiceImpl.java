@@ -63,10 +63,10 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public BaseResponse clusterize(BaseRequest request) {
+	public BaseResponse clusterize(CountRequest request) {
 		final String methodName = "fillDb";
 		return MethodUtil.processRequest(BaseResponse.class, request, methodName, LOGGER, (r) -> {
-			return orchestrationService.clasterize(request);
+			return orchestrationService.clusterize(request);
 		});
 	}
 }

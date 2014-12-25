@@ -17,7 +17,7 @@ public class PersonFactory {
 		person.setGender(getRandomFrom(Gender.values()));
 		person.setFirstName(person.getGender() == Gender.MALE ? getRandomFrom(maleNames) : getRandomFrom(femaleNames));
 		person.setLastName(getRandomFrom(lastNames));
-		person.setWeight(person.getGender() == Gender.MALE ? getRandomFloat(40, 75) : getRandomFloat(75, 120));
+		person.setWeight(person.getGender() == Gender.FEMALE ? getRandomFloat(40, 75) : getRandomFloat(75, 120));
 
 		return person;
 	}

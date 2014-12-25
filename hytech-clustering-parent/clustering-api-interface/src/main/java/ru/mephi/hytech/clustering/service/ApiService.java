@@ -39,5 +39,6 @@ public interface ApiService {
 
 	@Path("/clusterize")
 	@POST
-	public BaseResponse clusterize(BaseRequest request);
+	public BaseResponse clusterize(CountRequest request);
+
 }

@@ -5,6 +5,9 @@
         <dependent-module archiveName="clustering-api-service.war" deploy-path="/" handle="module:/resource/clustering-api-service/clustering-api-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="clustering-gui.war" deploy-path="/" handle="module:/resource/clustering-gui/clustering-gui">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="clustering-common-beans.jar" deploy-path="/lib" handle="module:/resource/clustering-common-beans/clustering-common-beans">
             <dependency-type>uses</dependency-type>
         </dependent-module>

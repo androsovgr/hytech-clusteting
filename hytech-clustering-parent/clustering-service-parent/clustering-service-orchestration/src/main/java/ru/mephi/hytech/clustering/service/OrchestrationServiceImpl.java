@@ -10,11 +10,15 @@ import javax.ejb.Stateless;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ru.mephi.hytech.clustering.model.Cluster;
+import ru.mephi.hytech.clustering.model.MinMax;
 import ru.mephi.hytech.clustering.model.Person;
-import ru.mephi.hytech.clustering.request.BaseRequest;
+import ru.mephi.hytech.clustering.request.ClusteringRequest;
+import ru.mephi.hytech.clustering.request.GetBordersRequest;
 import ru.mephi.hytech.clustering.request.MinMaxListRequest;
 import ru.mephi.hytech.clustering.request.PersonListRequest;
 import ru.mephi.hytech.clustering.response.BaseResponse;
+import ru.mephi.hytech.clustering.response.ClasterListResponse;
 import ru.mephi.hytech.clustering.response.CountRequest;
 import ru.mephi.hytech.clustering.response.DoubleArrayResponse;
 import ru.mephi.hytech.clustering.response.MinMaxListResponse;
@@ -49,39 +53,58 @@ public class OrchestrationServiceImpl implements OrchestrationService {
 	}
 
 	@Override
-	public BaseResponse clasterize(BaseRequest request) {
+	public ClasterListResponse clusterize(CountRequest request) {
 		String methodName = "clasterize()";
-		return MethodUtil
-				.processRequest(
-						BaseResponse.class,
-						request,
-						methodName,
-						LOGGER,
-						(r) -> {
-							// Get all
-							PersonListResponse getAllPeopleResponse = userDbService.getAllPeople(r);
-							if (ErrorCode.OK != getAllPeopleResponse.getErrorCode()) {
-								return new BaseResponse(getAllPeopleResponse.getErrorCode(), getAllPeopleResponse
-										.getErrorMessage());
-							}
-							// Get boundes
-							PersonListRequest personListRequest = new PersonListRequest(r.getTransactionId(),
-									getAllPeopleResponse.getUsers());
-							MinMaxListResponse minMaxListResponse = clusteringService
-									.getMinMaxCoordinates(personListRequest);
-							if (ErrorCode.OK != minMaxListResponse.getErrorCode()) {
-								return new BaseResponse(minMaxListResponse.getErrorCode(), minMaxListResponse
-										.getErrorMessage());
-							}
-							// Get norma
-							MinMaxListRequest MinMaxListRequest = new MinMaxListRequest(r.getTransactionId(),
-									minMaxListResponse.getMinMaxs());
-							DoubleArrayResponse normaResponse = clusteringService.getNorma(MinMaxListRequest);
-							if (ErrorCode.OK != normaResponse.getErrorCode()) {
-								return new BaseResponse(normaResponse.getErrorCode(), normaResponse.getErrorMessage());
-							}
+		return MethodUtil.processRequest(ClasterListResponse.class, request, methodName, LOGGER,
+				(r) -> clusterizePrivate(r));
+	}
 
-							return null;
-						});
+	private ClasterListResponse clusterizePrivate(CountRequest request) {
+		// Get all
+		PersonListResponse getAllPeopleResponse = userDbService.getAllPeople(request);
+		if (ErrorCode.OK != getAllPeopleResponse.getErrorCode()) {
+			return new ClasterListResponse(getAllPeopleResponse.getErrorCode(), getAllPeopleResponse.getErrorMessage());
+		}
+		// Get boundes
+		PersonListRequest personListRequest = new PersonListRequest(request.getTransactionId(),
+				getAllPeopleResponse.getUsers());
+		MinMaxListResponse minMaxListResponse = clusteringService.getMinMaxCoordinates(personListRequest);
+		if (ErrorCode.OK != minMaxListResponse.getErrorCode()) {
+			return new ClasterListResponse(minMaxListResponse.getErrorCode(), minMaxListResponse.getErrorMessage());
+		}
+		// Get norma
+		MinMaxListRequest MinMaxListRequest = new MinMaxListRequest(request.getTransactionId(),
+				minMaxListResponse.getMinMaxs());
+		DoubleArrayResponse normaResponse = clusteringService.getNorma(MinMaxListRequest);
+		if (ErrorCode.OK != normaResponse.getErrorCode()) {
+			return new ClasterListResponse(normaResponse.getErrorCode(), normaResponse.getErrorMessage());
+		}
+		// Clusterize
+		ClusteringRequest clusterizeRequest = new ClusteringRequest(personListRequest.getUsers(),
+				normaResponse.getDs(), (int) request.getCount());
+		ClasterListResponse clusterizeResponse = clusteringService.clusterize(clusterizeRequest);
+		if (ErrorCode.OK != clusterizeResponse.getErrorCode()) {
+			return new ClasterListResponse(clusterizeResponse.getErrorCode(), clusterizeResponse.getErrorMessage());
+		}
+		// Get Borders
+		for (Cluster cluster : clusterizeResponse.getClusters()) {
+			GetBordersRequest getBordersRequest = new GetBordersRequest(request.getTransactionId(),
+					cluster.getPersons(), normaResponse.getDs());
+			MinMaxListResponse getBordersResponse = clusteringService.getBorders(getBordersRequest);
+			if (ErrorCode.OK != getBordersResponse.getErrorCode()) {
+				return new ClasterListResponse(getBordersResponse.getErrorCode(), getBordersResponse.getErrorMessage());
+			}
+			cluster.getClusterInfo().setBorders(getBordersResponse.getMinMaxs());
+			MinMax minMax1 = cluster.getClusterInfo().getBorders().get(0);
+			double radius = (minMax1.getMax() - minMax1.getMin()) / 2;
+			for (MinMax minMax : cluster.getClusterInfo().getBorders()) {
+				double radiusCurrent = (minMax.getMax() - minMax.getMin()) / 2;
+				if (radiusCurrent > radius) {
+					radius = radiusCurrent;
+				}
+			}
+			cluster.getClusterInfo().setRadius(radius);
+		}
+		return clusterizeResponse;
 	}
 }

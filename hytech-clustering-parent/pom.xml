@@ -13,6 +13,7 @@
 		<module>clustering-api-interface</module>
 		<module>clustering-api-service</module>
 		<module>clustering-ear</module>
+		<module>clustering-gui</module>
 	</modules>
 
 	<properties>
